@@ -1,53 +1,38 @@
+// app/(tabs)/_layout.tsx
 import React from 'react';
 import { Tabs, router } from 'expo-router';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
+  View, Text, TouchableOpacity, StyleSheet, Platform,
 } from 'react-native';
-import {
-  Ionicons,
-  Feather,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
+import { Ionicons, Feather, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { useAuth } from '@/src/contexts/AuthContext';
 
 function BottomIcon({
-  name,
-  lib,
-  focused,
+  name, lib, focused,
 }: {
   name: string;
-  lib: 'Ionicons' | 'Feather' | 'MC';
+  lib: 'Ionicons' | 'Feather' | 'MC' | 'AntDesign';
   focused: boolean;
 }) {
   const tint = focused ? Colors.light.tint : '#b6b6b6';
   const size = 22;
 
-  if (lib === 'Feather')
-    return <Feather name={name as any} size={size} color={tint} />;
-  if (lib === 'MC')
-    return (
-      <MaterialCommunityIcons name={name as any} size={size} color={tint} />
-    );
+  if (lib === 'Feather') return <Feather name={name as any} size={size} color={tint} />;
+  if (lib === 'MC')      return <MaterialCommunityIcons name={name as any} size={size} color={tint} />;
+  if (lib === 'AntDesign') return <AntDesign name={name as any} size={size} color={tint} />;
   return <Ionicons name={name as any} size={size} color={tint} />;
 }
 
+export const unstable_settings = { initialRouteName: 'home' };
+
 export default function TabLayout() {
   const { isLoading, isAuthenticated, logout } = useAuth();
-  const scheme = useColorScheme();
-
-  if (isLoading) return null;
-  if (!isAuthenticated) return null; // guard
+  if (isLoading || !isAuthenticated) return null;
 
   const handleLogout = async () => {
     await logout();
-    router.push('/(auth)'); // back to auth landing
+    router.push('/(auth)');
   };
 
   return (
@@ -58,27 +43,22 @@ export default function TabLayout() {
         tabBarStyle: styles.tabBar,
       }}
     >
+      {/* HOME TAB */}
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           tabBarIcon: ({ focused }) => (
             <BottomIcon name="home" lib="Ionicons" focused={focused} />
           ),
-
-          /* Custom header for this tab */
           headerShown: true,
           header: () => (
             <View style={styles.header}>
               <Text style={styles.headerTitle}>Manage Courses</Text>
-
               <View style={styles.headerIcons}>
-                {/* notifications */}
                 <TouchableOpacity style={{ marginRight: 12 }}>
                   <Feather name="bell" size={20} color={Colors.light.tint} />
                   <View style={styles.badge} />
                 </TouchableOpacity>
-
-                {/* logout */}
                 <TouchableOpacity onPress={handleLogout}>
                   <Feather name="log-out" size={20} color="crimson" />
                 </TouchableOpacity>
@@ -88,36 +68,35 @@ export default function TabLayout() {
         }}
       />
 
+      {/* ACCOUNT ADD TAB (Ionicons) */}
       <Tabs.Screen
-        name="cloud"
+        name="accountadd"  // keep matching your folder name
         options={{
-          href: null, // inactive for now
           tabBarIcon: ({ focused }) => (
-            <BottomIcon name="cloud" lib="Feather" focused={focused} />
+            <BottomIcon name="addusergroup" lib="AntDesign" focused={focused} />
+            // or "person-add-outline" if you prefer the outline style
+          ),
+          headerShown: true,
+          header: () => (
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>Add Students</Text>
+            </View>
           ),
         }}
       />
 
-      <Tabs.Screen
-        name="activity"
+            <Tabs.Screen
+        name="accountlist"  // keep matching your folder name
         options={{
-          href: null,
           tabBarIcon: ({ focused }) => (
-            <BottomIcon name="refresh-circle" lib="Ionicons" focused={focused} />
+            <BottomIcon name="person" lib="Ionicons" focused={focused} />
+            // or "person-add-outline" if you prefer the outline style
           ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="profile"
-        options={{
-          href: null,
-          tabBarIcon: ({ focused }) => (
-            <BottomIcon
-              name="account-circle-outline"
-              lib="MC"
-              focused={focused}
-            />
+          headerShown: true,
+          header: () => (
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>Student List</Text>
+            </View>
           ),
         }}
       />

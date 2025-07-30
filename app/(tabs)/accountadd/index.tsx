@@ -39,7 +39,7 @@ export default function SignUpScreen() {
     try {
       setSubmitting(true);
       await signup(email, password, role);               // ⬅️ NEW
-      router.replace('/(tabs)/home');                         // land inside app
+      // router.replace('/(tabs)/home');                         // land inside app
     } catch (err) {
       alert((err as Error).message);
     } finally {
@@ -49,22 +49,10 @@ export default function SignUpScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* back arrow */}
-      <Pressable style={styles.backBtn} onPress={() => router.back()}>
-        <FontAwesome5 name="arrow-left" size={20} color="#000" />
-      </Pressable>
 
       {/* logo + title */}
       <View style={styles.header}>
-        <FontAwesome5 name="book-open" size={60} color={ORANGE} />
-        <FontAwesome5
-          name="lightbulb"
-          size={25}
-          color={ORANGE}
-          style={{ position: 'absolute', top: 8 }}
-        />
 
-        <Text style={styles.appName}>App{'\n'}Name</Text>
         <Text style={styles.create}>
           Create an <Text style={{ color: ORANGE }}>Account</Text>
         </Text>
@@ -117,18 +105,7 @@ export default function SignUpScreen() {
           <Text style={styles.radioLabel}>Student</Text>
         </Pressable>
 
-        <Pressable
-          style={styles.radioWrap}
-          onPress={() => setRole('instructor')}
-        >
-          <View
-            style={[
-              styles.radioDot,
-              { backgroundColor: role === 'instructor' ? ORANGE : LIGHT_GREY },
-            ]}
-          />
-          <Text style={styles.radioLabel}>Instructor</Text>
-        </Pressable>
+
       </View>
 
       {/* sign-up button */}

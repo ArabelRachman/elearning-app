@@ -154,7 +154,7 @@ function SubtopicBlock({
             key={m.id}
             style={styles.modRow}
             onPress={() => router.push({
-              pathname:'/course/[id]/module/[mid]',
+              pathname:'/(tabs)/home/course/[id]/module/[mid]',
               params:{ id:courseId, sub:sub.id, mid:m.id },
             })}
           >

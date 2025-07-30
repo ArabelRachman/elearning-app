@@ -39,7 +39,7 @@ export default function ModuleScreen() {
         <Pressable
           onPress={() =>
             router.replace({
-              pathname: '/course/[id]',   // course page
+              pathname: '/(tabs)/home/course/[id]',   // course page
               params:   { id: courseId }, // current course
             })
           }
@@ -70,11 +70,11 @@ export default function ModuleScreen() {
         style={styles.nextBtn}
         onPress={() => {
           if (!next) {             router.replace({
-              pathname: '/course/[id]',   // course page
+              pathname: '/(tabs)/home/course/[id]',   // course page
               params:   { id: courseId }, // current course
             }); return; }
           router.replace({
-            pathname:`/course/[id]/module/[mid]`,
+            pathname:`/(tabs)/home/course/[id]/module/[mid]`,
             params:{ id:courseId, sub:next.subtopicId, mid:next.id },
           });
         }}

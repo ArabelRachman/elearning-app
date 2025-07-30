@@ -48,12 +48,12 @@ export default function AuthLanding() {
         </View>
       </View>
 
-     <Pressable onPress={() => router.push('/signup')}>
+
        <Text style={styles.smallText}>
          Don’t have an account?{' '}
          <Text style={{ fontWeight: '600' }}>Sign Up</Text>
        </Text>
-     </Pressable>
+
 
       <TouchableOpacity
         style={styles.button}

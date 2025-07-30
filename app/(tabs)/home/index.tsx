@@ -68,7 +68,7 @@ export default function ManageCourses() {
           renderItem={({ item }) => (
             <Pressable
               onPress={() =>
-                router.push({ pathname: '/course/[id]', params: { id: item.id } })
+                router.push({ pathname: '/(tabs)/home/course/[id]', params: { id: item.id } })
               }>
               <CourseRow
                 {...item}
