@@ -1,4 +1,4 @@
-// app/(tabs)/_layout.tsx
+// app/(studenttabs)/_layout.tsx
 import React from 'react';
 import { Tabs, router } from 'expo-router';
 import {
@@ -53,7 +53,7 @@ export default function TabLayout() {
           headerShown: true,
           header: () => (
             <View style={styles.header}>
-              <Text style={styles.headerTitle}>Manage Courses</Text>
+              <Text style={styles.headerTitle}>My Courses</Text>
               <View style={styles.headerIcons}>
                 <TouchableOpacity onPress={handleLogout}>
                   <Feather name="log-out" size={20} color="crimson" />
@@ -64,25 +64,8 @@ export default function TabLayout() {
         }}
       />
 
-      {/* ACCOUNT ADD TAB (Ionicons) */}
-      <Tabs.Screen
-        name="accountadd"  // keep matching your folder name
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <BottomIcon name="addusergroup" lib="AntDesign" focused={focused} />
-            // or "person-add-outline" if you prefer the outline style
-          ),
-          headerShown: true,
-          header: () => (
-            <View style={styles.header}>
-              <Text style={styles.headerTitle}>Add Students</Text>
-            </View>
-          ),
-        }}
-      />
-
             <Tabs.Screen
-        name="accountlist"  // keep matching your folder name
+        name="profile"  // keep matching your folder name
         options={{
           tabBarIcon: ({ focused }) => (
             <BottomIcon name="person" lib="Ionicons" focused={focused} />
@@ -91,7 +74,7 @@ export default function TabLayout() {
           headerShown: true,
           header: () => (
             <View style={styles.header}>
-              <Text style={styles.headerTitle}>Student List</Text>
+              <Text style={styles.headerTitle}>Profile</Text>
             </View>
           ),
         }}

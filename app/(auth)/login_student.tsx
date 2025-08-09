@@ -40,7 +40,7 @@ export default function LoginScreen() {
     try {
       setSubmitting(true);
       await loginStudent(email, password);     // 🔑 AuthContext helper
-      router.replace('/(tabs)/home');        // land in protected area
+      router.replace('/(studenttabs)/home');        // land in protected area
     } catch (err: any) {
       alert(err.message ?? 'Login failed.');
     } finally {

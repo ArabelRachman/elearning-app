@@ -39,8 +39,8 @@ export default function LoginScreen() {
 
     try {
       setSubmitting(true);
-      await loginInstructor(email, password);     // 🔑 AuthContext helper
-      router.replace('/(tabs)/home');        // land in protected area
+      await loginInstructor(email, password); 
+      router.replace('/(tabs)/home');  
     } catch (err: any) {
       alert(err.message ?? 'Login failed.');
     } finally {

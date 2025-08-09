@@ -1,0 +1,67 @@
+import {
+  collection,
+  collectionGroup,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+import { db }   from '../firebase';
+
+/** Cache courseId -> modulesTotal to avoid re-reading subtopics */
+const modulesTotalCache = new Map<string, number | undefined>();
+
+async function computeModulesTotal(courseId: string): Promise<number | undefined> {
+  if (modulesTotalCache.has(courseId)) return modulesTotalCache.get(courseId);
+  try {
+    const subCol = collection(db, 'courses', courseId, 'subtopics');
+    const snap = await getDocs(subCol);
+    let total = 0;
+    snap.forEach(d => {
+      const n = Number(d.get('moduleCount'));
+      if (Number.isFinite(n)) total += n;
+    });
+    modulesTotalCache.set(courseId, total);
+    return total;
+  } catch {
+    modulesTotalCache.set(courseId, undefined);
+    return undefined;
+  }
+}
+
+/**
+ * Backfills existing /courses/students/* docs with progress defaults.
+ * Returns how many docs were scanned and updated.
+ */
+export async function backfillStudentProgress() {
+  const snap = await getDocs(collectionGroup(db, 'students'));
+
+  let scanned = 0;
+  let updated = 0;
+
+  for (const d of snap.docs) {
+    scanned++;
+    const data = d.data() || {};
+    const courseRef = d.ref.parent.parent; // /courses/{courseId}
+    if (!courseRef) continue;
+    const courseId = courseRef.id;
+
+    const patch: Record<string, any> = {};
+
+    if (!data.uid) patch.uid = d.id;
+    if (typeof data.modulesCompleted !== 'number') patch.modulesCompleted = 0;
+    if (typeof data.completed !== 'boolean') patch.completed = false;
+    if (!data.completedModules || typeof data.completedModules !== 'object') {
+      patch.completedModules = {};
+    }
+    if (data.modulesTotal == null) {
+      const total = await computeModulesTotal(courseId);
+      if (total !== undefined) patch.modulesTotal = total;
+    }
+
+    if (Object.keys(patch).length > 0) {
+      await updateDoc(d.ref, patch);
+      updated++;
+    }
+  }
+
+  return { scanned, updated };
+}

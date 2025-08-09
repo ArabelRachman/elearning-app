@@ -1,11 +1,11 @@
+// hooks/useCourse.ts
 import { useEffect, useState } from 'react';
 import {
   doc, onSnapshot, DocumentData,
   collection, getCountFromServer,
 } from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
-
-import { db, storage } from '@/src/firebase';
+import { db, storage } from '@/src/firebase'; // or '@/firebase' if your alias maps @ -> src
 
 export type CourseData = {
   id: string;
@@ -23,27 +23,31 @@ export function useCourse(id: string) {
   const [course,  setCourse]  = useState<CourseData | null>(null);
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'courses', id), async snap => {
+    const unsub = onSnapshot(doc(db, 'courses', id), async (snap) => {
       if (!snap.exists()) { setCourse(null); setLoading(false); return; }
       const data: DocumentData = snap.data();
 
-      /* thumb URL */
+      // ── SAFE THUMBNAIL URL ─────────────────────────────────────────────
       let url: string | null = null;
-      try { url = await getDownloadURL(ref(storage, data.thumbnailPath)); }
-      catch { /* ignore */ }
+      const path = data?.thumbnailPath;
+      if (typeof path === 'string' && path.length > 0) {
+        try { url = await getDownloadURL(ref(storage, path)); } catch {}
+      } else if (typeof data?.thumbnailUrl === 'string' && data.thumbnailUrl.startsWith('http')) {
+        // fallback if you previously stored a full URL
+        url = data.thumbnailUrl;
+      }
+      // ──────────────────────────────────────────────────────────────────
 
-      /* student count */
+      // student count (safe)
       let count = 0;
       try {
-        const agg = await getCountFromServer(
-          collection(db, 'courses', id, 'students'),
-        );
+        const agg = await getCountFromServer(collection(db, 'courses', id, 'students'));
         count = agg.data().count;
       } catch {}
 
       setCourse({
         id,
-        title:        data.title,
+        title:        data.title ?? '',
         description:  data.description ?? '',
         status:       data.status,
         ownerEmail:   data.ownerEmail ?? '',

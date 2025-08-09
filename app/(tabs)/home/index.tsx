@@ -17,6 +17,7 @@ import CourseRow            from '@/components/CourseRow';
 import CreateCourseModal    from '@/components/CreateCourseModal';
 import EditCourseModal      from '@/components/EditCourseModal';
 import { deleteCourse }     from '@/src/lib/deleteCourse';
+import { Feather } from '@expo/vector-icons';
 
 const ORANGE = '#F4A83D';
 
@@ -31,11 +32,7 @@ export default function ManageCourses() {
   return (
     <View style={styles.container}>
       {/* hero */}
-      <Image
-        source={{ uri: 'https://i.imgur.com/rRYdOrM.png' }}
-        style={styles.hero}
-        resizeMode="contain"
-      />
+      <Feather name="coffee" size={140} color="#8b6c4eff" style={{ marginTop: 20, alignSelf: 'center' }} />
 
       {/* filter pills */}
       <View style={styles.toggleRow}>
