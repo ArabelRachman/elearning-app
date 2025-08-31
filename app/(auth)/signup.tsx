@@ -127,7 +127,7 @@ export default function SignUpScreen() {
               { backgroundColor: role === 'instructor' ? ORANGE : LIGHT_GREY },
             ]}
           />
-          <Text style={styles.radioLabel}>Instructor</Text>
+          <Text style={styles.radioLabel}>Admin</Text>
         </Pressable>
       </View>
 

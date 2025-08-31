@@ -66,7 +66,7 @@ export default function LoginScreen() {
           color={ORANGE}
           style={{ position: 'absolute', top: 8 }}
         />
-        <Text style={styles.headerText}>Instructor Login</Text>
+        <Text style={styles.headerText}>Admin Login</Text>
       </View>
 
       {/* email */}

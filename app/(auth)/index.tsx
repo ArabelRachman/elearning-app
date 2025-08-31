@@ -49,12 +49,6 @@ export default function AuthLanding() {
       </View>
 
 
-       <Text style={styles.smallText}>
-         Don’t have an account?{' '}
-         <Text style={{ fontWeight: '600' }}>Sign Up</Text>
-       </Text>
-
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => router.push('/login_student')}   
@@ -66,7 +60,7 @@ export default function AuthLanding() {
         style={[styles.button, { marginTop: 14 }]}
         onPress={() => router.push('/login_instructor')}
       >
-        <Text style={styles.buttonText}>Log In as Instructor</Text>
+        <Text style={styles.buttonText}>Log In as Admin</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
